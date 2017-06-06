@@ -16,7 +16,7 @@ public class MainClassGame {
 	public static void main(String[] args) {
 		
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
-	    Date dateobj = new Date();
+		Date dateobj = new Date();
 	    
 	    //TIME CALLER->
 	    System.out.println(df.format(dateobj));
@@ -36,8 +36,6 @@ public class MainClassGame {
 		Random dice = new Random();
 		Player1 player = null;
 		Scenarios scenario; 
-		
-		
 		
 		System.out.println(">Voice: Welcome to the Social Experiment.");
 		//USER INPUTS
