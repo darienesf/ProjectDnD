@@ -82,6 +82,10 @@ public class MainClassGame {
 		else if (areUsure == 2){
 			System.out.println("Please enter your correct information.");
 			continue INTRO;
+      else if (areUsure !=1 && areUsure !=2){
+errMsg();
+areUsure = kb.nextInt();
+}
 		}
 		}
 		
