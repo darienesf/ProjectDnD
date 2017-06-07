@@ -5,13 +5,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class MainClassGame {
-	public static void exit(){
+	public static void exit()
+	{
 		System.out.println("exit successful");
 	}
-	public static void seperator(){
+	public static void seperator()
+	{
 		System.out.println("----------------------------------------");
 	}
-	
+	public static void errMsg()
+	{
+		System.err.println("Please enter a number based on the choices given!");
+	}
 	@SuppressWarnings({ "resource", "unused" })
 	public static void main(String[] args) {
 		
@@ -38,6 +43,9 @@ public class MainClassGame {
 		Scenarios scenario; 
 		
 		System.out.println(">Voice: Welcome to the Social Experiment.");
+		
+		INTRO:
+		while(intro){
 		//USER INPUTS
 		System.out.println(">Are you Male or Female?"); 
 		String gender = kb.next(); //gender
@@ -60,13 +68,11 @@ public class MainClassGame {
 		seperator();
 		
 		//INFO CHECK
-		
 		System.out.println("Your stats are as follows");
 		player.major();
 		seperator();
 		player.PrintInfo();
-		INTRO:
-		while(intro){
+		
 		System.out.println("\nIs this information correct?"
 				+ "\n1. Yes, it is."
 				+ "\n2. No, it is not.");
@@ -78,12 +84,27 @@ public class MainClassGame {
 			continue INTRO;
 		}
 		}
+		
+		/*
+		*Characters who will go to your graduation referenced OFTEN
+		*Converts user input into object for easier reference
+		*/
+		System.out.println(">Voice: Enter the name of someone who is always by your side.");
+		String impPers1 = kb.next();
+				player.getLifeline1(impPers1);
+				Player1 player2 = new Player1(null,impPers1,0,"none",null,null); 
+		System.out.println(">Enter the name of your worst enemy!"
+				+ " 'Dinkleberg'(Recommended)");
+		String impPers2 = kb.next(); 
+				player.getLifeline2(impPers2);
+				Player1 player3 = new Player1(null,impPers1,0,"none",null,null);
+		
 		INTRO2:
 		while(intro2){
 		seperator();
 		System.out.println(player.getName() + " it is time to get up...");
 		System.out.println(df.format(dateobj));
-		System.out.println("\nObjective:\nCheck your phone.\nType in 'help' for help.");
+		System.out.println("\nObjective:\nCheck your phone.\n>Type in 'help' for help.");
 		boolean exit = true;
 		if(exit){break;}
 		else{continue INTRO2;}
@@ -92,51 +113,77 @@ public class MainClassGame {
 		ESCAPEROOM:
 		while(escaping){
 		int chance = dice.nextInt(20);
-		String impPers1 = null;
 		boolean convo1 = false;
 		String escapeRoom = kb.nextLine();
 		
+		/*possible if-elseif statement for user inputs
+		 * NOT CONCRETE
+		 
+		if(escapeRoom == "pickuphone"){
+		System.out.println();
+		}
+		
+		*/
+		
 		switch(escapeRoom){
 		 case "help":
-			 System.out.println("type in 'get phone'");
+			 System.err.println("type in 'get phone'");
 		}
 		
 		switch(escapeRoom){
 			case "get phone":
-			 System.out.println("You take your phone out of your pocket... You have 47 missed calls from..."
-					 + "\n(enter the name of the first person that comes to mind)");
-			 impPers1 = kb.nextLine();
-			 player.getLifeline1(impPers1);
-			 System.out.println("Are you going to call " + impPers1 + " back?"
+				seperator();
+			 System.out.println(">You take your phone out of your pocket... "
+			 		+ "\nYou have 47 missed calls from " + player2.getName());
+			 System.out.println("Are you going to call " + player2.getName() + " back?"
 					 + "\n1. Yes"
 					 + "\n2. No");
 			int callPers = kb.nextInt();
-			if(callPers==1){
- 			 
+			if(callPers==1){ 
 			if (chance>=15){
  				 System.out.println(impPers1+": Hey, " + player.getName() + " where have you been?\nYou've been gone since Sunday!");
+ 				 convo1 = true;
  				 break;
  			 } //chance If
  			 else if(chance<14 && chance>9){
- 				 System.out.println(impPers1+": H%$#, *&(@, 18zaa, Mnz19000");
- 				 System.out.println("Voice: The signal seems bad, try moving around.(Type in 'move' to see what happens)");
- 				 String enterMove = kb.next();
+ 				System.out.println(impPers1+": H%$#, *&(@, 18zaa, Mnz19000");
+ 				System.out.println("Voice: The signal seems bad, try moving around.(Type in 'move' to see what happens)");
+ 				String enterMove = kb.next();
 				System.out.println("Good job, the signal is getting stronger!");
 				System.out.println(impPers1+": Hey, " + player.getName() + " where have you been?\nYou've been gone since Sunday!");
+				convo1 = true;
 				break;
  			 } //chance elseIf 
  			 else { 
- 				System.out.println("Voice: You actually have no service... what are the odds!");
-				 break;
+ 				System.out.println("Voice: You actually have no service... what are the odds!"
+						   +"\nMaybe you can try again later");
  			 } //chance else
 			 } //callpers If
+				else if(callPers==2){
+					System.out.println("Good idea..");
+					//STAT CHANGE
+					break;
+				}
+				else if (callPers!=1 && callPers!=2){
+					errMsg();
+					System.out.println("Call back " + player2.getName() +"?");
+					callPers = kb.nextInt();
+				}
 			 } //getphoneCase switch
-		if(!convo1 == true){
+		
+		/*
+		SWITCH FOR CONVERSATION WITH FIRST IMPORTANT PERSON
+		IFF
+		callPers = 1
+		chance > 9 
+		*/
+		if(convo1==true && chance>=9){
 			int impPers1convo1;
+			seperator();
 			System.out.println(">Voice:What is your response?"
-					+ "\n1. My phone has been dead since, I'm sorry!"
+					+ "\n1. My phone has been acting up, I'm sorry!"
 					+ "\n2. None of your business, why did you call me so much?"
-					+ "\n3. I was studying for exams."
+					+ "\n3. I was studying for my final."
 					+ "\n4. I have no clue, I wish I knew...");
 			impPers1convo1 = kb.nextInt();
 			if(impPers1convo1 == 1){
@@ -155,11 +202,12 @@ public class MainClassGame {
 			}
 			
 			else if(impPers1convo1 ==4){
-				System.out.println(impPers1 + ": What? Stop playing games" + player.getName() + ".");
+				System.out.println(impPers1 + ": What? Stop joking around " + player.getName() + "!");
 				break;
 			}
 			else 
-				System.err.println("Error, please enter a digit from 1-4");
+				errMsg();
+				impPers1convo1 = kb.nextInt();
 		}
 		
 		} //while escaping
