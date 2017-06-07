@@ -148,7 +148,7 @@ public class MainClassGame {
  			 else if(chance<14 && chance>9){
  				System.out.println(impPers1+": H%$#, *&(@, 18zaa, Mnz19000");
  				System.out.println("Voice: The signal seems bad, try moving around.(Type in 'move' to see what happens)");
- 				String enterMove = kb.next();
+ 				String enterMove = kb.next(); //easy exploit, any input will work
 				System.out.println("Good job, the signal is getting stronger!");
 				System.out.println(impPers1+": Hey, " + player.getName() + " where have you been?\nYou've been gone since Sunday!");
 				convo1 = true;
