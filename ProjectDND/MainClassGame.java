@@ -92,17 +92,20 @@ public class MainClassGame {
 		System.out.println(">Voice: Enter the name of someone who is always by your side.");
 		String impPers1 = kb.next();
 				player.getLifeline1(impPers1);
-				Player1 player2 = new Player1(null,impPers1,0,"none",null,null); 
+				Player1 bff = new Player1(null,impPers1,0,"none",null,null); 
 		System.out.println(">Enter the name of your worst enemy!"
 				+ " 'Dinkleberg'(Recommended)");
 		String impPers2 = kb.next(); 
 				player.getLifeline2(impPers2);
-				Player1 player3 = new Player1(null,impPers1,0,"none",null,null);
+				Player1 rival = new Player1(null,impPers1,0,"none",null,null);
+		System.out.println(">Voice: Thank you for cooperating, I have saved your answers as we may need to refer back to them later..."
+				+ "\nLet us begin!");
+		kb.nextLine();
 		
 		INTRO2:
 		while(intro2){
 		seperator();
-		System.out.println(player.getName() + " it is time to get up...");
+		System.out.println("***"+player.getName() + " it is time to get up!***");
 		System.out.println(df.format(dateobj));
 		System.out.println("\nObjective:\nCheck your phone.\n>Type in 'help' for help.");
 		boolean exit = true;
@@ -126,6 +129,27 @@ public class MainClassGame {
 		*/
 		
 		switch(escapeRoom){
+		case "wake up":
+			System.out.println(">Voice: Wait how do you know that?!");
+			kb.nextLine();
+			System.err.println("Ending simulation before completion will result in full cerebral crash.");
+			kb.nextLine();
+			System.out.println(player.getName() + " stop!!!!");
+			System.err.println("Wake up?");
+			String oneMoreTime = kb.nextLine();
+			switch(oneMoreTime){
+			case "wake up":
+				System.err.println("Simulation Error(user_conscious-4011)"
+						+ "\nExecute full wipe of system...\n");
+				seperator();
+				kb.nextLine();
+				System.err.println("System wipe complete!");
+				break;
+			}
+			exit();
+			break;
+		}
+		switch(escapeRoom){
 		 case "help":
 			 System.err.println("type in 'get phone'");
 		}
@@ -134,8 +158,8 @@ public class MainClassGame {
 			case "get phone":
 				seperator();
 			 System.out.println(">You take your phone out of your pocket... "
-			 		+ "\nYou have 47 missed calls from " + player2.getName());
-			 System.out.println("Are you going to call " + player2.getName() + " back?"
+			 		+ "\nYou have 47 missed calls from " + bff.getName());
+			 System.out.println("Are you going to call " + bff.getName() + " back?"
 					 + "\n1. Yes"
 					 + "\n2. No");
 			int callPers = kb.nextInt();
@@ -148,7 +172,7 @@ public class MainClassGame {
  			 else if(chance<14 && chance>9){
  				System.out.println(impPers1+": H%$#, *&(@, 18zaa, Mnz19000");
  				System.out.println("Voice: The signal seems bad, try moving around.(Type in 'move' to see what happens)");
- 				String enterMove = kb.next(); //easy exploit, any input will work
+ 				String enterMove = kb.next();
 				System.out.println("Good job, the signal is getting stronger!");
 				System.out.println(impPers1+": Hey, " + player.getName() + " where have you been?\nYou've been gone since Sunday!");
 				convo1 = true;
@@ -157,6 +181,9 @@ public class MainClassGame {
  			 else { 
  				System.out.println("Voice: You actually have no service... what are the odds!"
 						   +"\nMaybe you can try again later");
+ 				player.callFail();
+ 				break;
+ 				
  			 } //chance else
 			 } //callpers If
 				else if(callPers==2){
@@ -166,7 +193,7 @@ public class MainClassGame {
 				}
 				else if (callPers!=1 && callPers!=2){
 					errMsg();
-					System.out.println("Call back " + player2.getName() +"?");
+					System.out.println("Call back " + bff.getName() +"?");
 					callPers = kb.nextInt();
 				}
 			 } //getphoneCase switch
@@ -211,5 +238,8 @@ public class MainClassGame {
 		}
 		
 		} //while escaping
+		System.out.println("######################");
+		System.out.println("Thank you for playing!");
+		System.out.println("######################");
 }	
 }
