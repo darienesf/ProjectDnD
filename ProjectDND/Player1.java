@@ -27,6 +27,10 @@ public class Player1 {
 	public void chooseMajor()
 	{
 		switch(majName) {
+		case "none":
+			major = null;
+		}
+		switch(majName) {
 		case "CS":
 		case "cs":
 			major = new compSci();
@@ -96,12 +100,12 @@ public class Player1 {
 	}
 	public void major()
 	{
-		System.out.println("INT is " + major.INT 
-				+ "\nSTR is " + major.STR
-				+ "\nCHR is " + major.CHR
-				+ "\nWSD is " + major.WSD
-				+ "\nDEX is " + major.DEX
-				+ "\nEND is " + major.END);
+		System.out.println("+Intelligence(INT) is " + major.INT 
+				+ "\n+Strength(STR) is " + major.STR
+				+ "\n+Charisma(CHR) is " + major.CHR
+				+ "\n+Wisdom(WSD) is " + major.WSD
+				+ "\n+Dexterity(DEX) is " + major.DEX
+				+ "\n+Endurance(END) is " + major.END);
 		
 	}
 	public void PrintInfo()
@@ -111,6 +115,9 @@ public class Player1 {
 				+ "\nYou are " + this.age+"."
 				+ "\nYour major is " + majName+".");
 	}
-}
 	
-
+	public void callFail()
+	{
+		System.out.println("");
+	}
+}
