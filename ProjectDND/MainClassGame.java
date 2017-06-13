@@ -72,7 +72,6 @@ public class MainClassGame {
 		player.major();
 		seperator();
 		player.PrintInfo();
-		
 		System.out.println("\nIs this information correct?"
 				+ "\n1. Yes, it is."
 				+ "\n2. No, it is not.");
@@ -84,7 +83,6 @@ public class MainClassGame {
 			continue INTRO;
 		}
 		}
-		
 		/*
 		*Characters who will go to your graduation referenced OFTEN
 		*Converts user input into object for easier reference
@@ -183,7 +181,6 @@ public class MainClassGame {
 						   +"\nMaybe you can try again later");
  				player.callFail();
  				break;
- 				
  			 } //chance else
 			 } //callpers If
 				else if(callPers==2){
