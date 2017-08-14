@@ -1,0 +1,23 @@
+Voice: "Hello <user>, welcome to the Social Experiment."
+Voice: "In Social Experiment, you will come at odds with your mind."
+Voice: "Each choice dictates how your story unfolds."
+
+<USER INPUTS DATA>
+<SAVE USER DATA>
+
+Scenario 1 (Tutorial)
+  "Dream"
+Voice: "In this scenario, you will learn a few of the commands to work your way through the simulation."
+Voice: "Why don't you try checking your pockets?"
+
+<DICE ROLL ON SUCCESSFUL 'check pockets' COMMAND>
+<DICE ROLL DETERMINES WHAT USER FINDS>
+
+/*
+* int chance = dice.nextInt(20);
+* if chance >= 13 (Suceed 100%)
+* if chance >= 6 && <= 12 (Succeed 50%)
+* if chance <= 5 (Succeed 0%)
+*/
+
+<ADD ITEM TO INV>
