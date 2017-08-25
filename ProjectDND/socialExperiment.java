@@ -47,9 +47,9 @@ public class socialExperiment {
 			
 		case "help":
 			System.err.println("Commands List:"
+					+ "\n<save>"
+					+ "\n<inventory>"
 					+ "\n<install>"
-					+ "\n<get>"
-					+ "\n<quicksave>"
 					+ "\nNOTE: These commands are to be entered without the arrows surrounding them.\n");
 			continue COMMANDS;
 		
@@ -225,8 +225,10 @@ public class socialExperiment {
 				timeDisplay();
 				System.out.println("\nObjective:\nFigure out where you are.");
 				System.err.println("Type in 'help' if you ever get lost");
+				
 				WHATTODO:
 					while(choice) {
+						
 				int actionCheck = 0;
 				action = kb.nextLine();
 				switch(action.toLowerCase()){
@@ -242,7 +244,12 @@ public class socialExperiment {
 					continue WHATTODO;
 				
 				case "check pockets":
-					
+					int count = 0;
+					if(count>=1){
+						System.err.println("You already checked your pockets!");
+						continue WHATTODO;
+					}
+					else if(count<=0){
 					System.err.println("You scramble through your pockets...");
 					kb.nextLine();
 					while(actionCheck <= 1) 
@@ -253,6 +260,7 @@ public class socialExperiment {
 						inventory[1] = "Charged Phone";
 						System.err.println(inventory[1]);
 						System.out.print("has been added to your inventory");
+						count++;
 						continue WHATTODO;
 					}
 					else if(chance<=14 && chance>=7){
@@ -261,6 +269,7 @@ public class socialExperiment {
 						inventory[1] = "Dying Phone";
 						System.err.println(inventory[1]); 
 						System.out.print("has been added to your inventory");
+						count++;
 						continue WHATTODO;
 						}
 					else if(chance<=6); {
@@ -269,11 +278,13 @@ public class socialExperiment {
 						inventory[1] = "Matches";
 						System.err.println(inventory[1]); 
 						System.out.println("have been added to your inventory");
+						count++;
 						continue WHATTODO;
 					} //esle if chance<6
 					
 					}	
 				} 
+					}
 			} //while escapeRoom
 			
 			System.err.println("######################");
@@ -281,4 +292,3 @@ public class socialExperiment {
 			System.err.println("######################");
 	}
 	}
-
