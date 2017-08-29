@@ -19,3 +19,4 @@ public class Playgame<Story> {
 	}
 	
 }
+system.out.println("hello");
