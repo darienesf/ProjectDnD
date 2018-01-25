@@ -1,31 +1,68 @@
 package ProjectDND;
 
 import java.util.*;
+import javax.swing.JFrame;
+
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Dimension;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 @SuppressWarnings ("unused")
 
-public class socialExperiment {
+
+//MAKE SOME FUNCTIONS FOR YOUR PRINTS
+
+public class socialExperiment extends Canvas implements Runnable {	
+	private static final long serialVersionUID = 1L;
 	
+	public static final int WIDTH  = 160;
+	public static final int HEIGHT = WIDTH/12*9;
+	public static final int SCALE  = 3;
+	public static final String NAME = "SocialExperiment";
+
+	static Player1 Hero = new Player1(null, null, null, 0, null);
+	String action;
+	
+	
+	private JFrame frame;
+
+	public socialExperiment(){
+		setMinimumSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		setMaximumSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		
+		frame = new JFrame(NAME);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		frame.add(this, BorderLayout.CENTER);
+		frame.pack();
+		
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
 	/*	HOW TO CALL COMMAND MENU METHOD
 	 	
 	 	switch(INPUT)
 		{case "commands": commandMenu();}
 		
 	 */
-	public static void commandMenu()
+	private static void commandMenu()
 	{	
-		Scanner commandIn = new Scanner(System.in);
-		String command = null;
+		Scanner commandIn   = new Scanner(System.in);
+		String command      = null;
 		boolean commandList = true;
 		
 		COMMANDS:
-			while(commandList){
-				System.out.print("\\[cmdmod]");
+		while(commandList){
+			System.out.print("\\[cmdmod]");
 				command = commandIn.nextLine();
-		switch(command){
-		
+		switch(command)
+		{
 		case "sudo apt init wakeup":
 			wipe();
 			break;
@@ -54,14 +91,15 @@ public class socialExperiment {
 			continue COMMANDS;
 		
 		case "exit":
+			commandIn.close();
 			exit();
 			break;
-			}
+			}	
 		break;
 		} //switch commands
 	} //commandMenu method
 	
-	public static void wipe()
+	private static void wipe()
 	{	
 		Scanner wipeIn = new Scanner(System.in);
 		System.out.println(":VOICE:\n>Wait how do you know that?!\n");
@@ -82,39 +120,11 @@ public class socialExperiment {
 		}
 	}
 	
-	public static void exit()
+	public static String userName()
 	{
-		System.out.println("Exit Successful!");
-		//break checks for loops
-	}
-	public static void seperator()
-	{
-		System.out.println("---------------------------------------");
-	}
-	
-	public static void timeDisplay()
-	{
-		DateFormat df = new SimpleDateFormat("HH:mm:ss");
-		Date dobj = new Date();
-		System.out.println(df.format(dobj));
-	}
-	
-	public static void main(String[] args){
-		
-		//SCENARIOS
-		boolean login = true;
-		boolean beginning = true;
-		boolean escapeRoom = true;
-		
 		Scanner kb = new Scanner(System.in);
-		Random dice = new Random();
-		Player1 player = null;
 		String username = null;
-		String action = null;
-		String[] inventory = new String[10];
-		
-		//System.out.println(":VOICE: \n>Welcome, you are now in the Social Experiment."); //INTRO MESSAGE 
-		//Progress Load after intro message
+		boolean login = true;
 		
 		LOGIN:
 			while(login){
@@ -125,40 +135,47 @@ public class socialExperiment {
 				username = kb.nextLine();
 				
 				switch(username){
-				case "admin": 
+				case "admin":
 					System.err.println("ADMIN PRIVELEGES ENABLED\n");
-					//username = player.getUsername("admin");
+					username = "admin";
+					
 					//special priveleges in-game
-					break;
 					
 				case "guest":
 					System.err.println("DATA IS NO LONGER BEING RECORDED\n");
-					//username = player.getUsername("guest");
+					
 					//no data is saved 
-					break;
 				
 				case "anonymous":
 					System.err.println("YOUR DATA WILL NOW BE ENCRYPTED\n");
-					//username = player.getUsername("anon");
+					username = "";
 					//encrypts user data
-					break;
+					
 					
 				case "username":
 					System.err.println("WELCOME BACK\n");
-					//LOAD DATA
-					break;
-	
-				case "newuser":
-					System.err.println("USER REGISTER PROCESS COMMENCED\n");
-					//username = player.getUsername("n00b");
-					//NEW GAME
+					//dataLoad();
 					break;
 					
+				case "newuser":
+					System.err.println("USER REGISTER PROCESS COMMENCED\n");
+					username = "n00b";
+					//NEW GAME
+					break;
 				} //switch username
+				kb.close();
 				break;
 			} //while login
-				
+		return username;
+	}//intro method
+	
+	private static void userDataInput()
+	{
+		boolean beginning = true;
+		Scanner kb = new Scanner(System.in);
+		
 		BEGINNING:
+			//Player object contains username, gender, name, age, major variables
 			while(beginning){
 				boolean questions = true;
 				kb.nextLine();
@@ -183,12 +200,10 @@ public class socialExperiment {
 								+ "\n-Nursing = NUR"
 								+ "\n-Biology = BIO"
 								+ "\n-Politics = POL");
-							//choice of major will change the major of rival and bff
-							//bff = complete opposite of your major
-							//rival = "better" than your major
+					
 						String major = kb.next();
-				
-						player = new Player1(null, gender, name, age, major, null, null);
+						Player1 player = new Player1(null, gender, name, age, major);
+						
 						System.out.println(">Below are your current stats.");
 						player.major();
 						seperator();
@@ -200,6 +215,7 @@ public class socialExperiment {
 						String begin = kb.next();
 						switch(begin.toUpperCase()){
 						case "Y":
+							Hero = player;
 							System.out.println("Thank you for answering the questions with honesty.");
 							break;
 						case "N":
@@ -212,7 +228,14 @@ public class socialExperiment {
 				//exit();
 				break;
 			} // while beginning
-			
+	}
+	
+	private static void dream(){
+		boolean escapeRoom = true;
+		Scanner kb = new Scanner(System.in);
+		Random dice = new Random();
+		String action;
+		
 		DARKROOM:
 			while(escapeRoom){
 				int chance = dice.nextInt(20);
@@ -221,7 +244,7 @@ public class socialExperiment {
 				String continueOn;
 				seperator();
 				System.out.println(":VOICE:\n"
-						+ ">" + player.getName() + " it is time to get up!");
+						+ ">" + Hero.getName() + " it is time to get up!");
 				timeDisplay();
 				System.out.println("\nObjective:\nFigure out where you are.");
 				System.err.println("Type in 'help' if you ever get lost");
@@ -252,12 +275,13 @@ public class socialExperiment {
 					else if(count<=0){
 					System.err.println("You scramble through your pockets...");
 					kb.nextLine();
+					String[] inventory = new String[5];
 					while(actionCheck <= 1) 
 						
 					if(chance>=15){ //different inventory based on chance var roll
 						System.err.println(":VOICE:"
 								+ "\n>You found your phone, what will you do with it?");
-						inventory[1] = "Charged Phone";
+						inventory [1] = "Charged Phone";
 						System.err.println(inventory[1]);
 						System.out.print("has been added to your inventory");
 						count++;
@@ -285,10 +309,41 @@ public class socialExperiment {
 					}	
 				} 
 					}
-			} //while escapeRoom
+			} //while escapeRoom */
+			
+	}
+	public static void exit()
+	{
+		System.out.println("Exit Successful!");
+		//break checks for loops
+	}
+	public static void seperator()
+	{
+		System.out.println("---------------------------------------");
+	}
+	
+	public static void timeDisplay()
+	{
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		Date dobj = new Date();
+		System.out.println(df.format(dobj));
+	}
+	
+	public static void main(String[] args){
+		userName();
+		userDataInput();
+		dream();
+		
+			
+		
 			
 			System.err.println("######################");
 			System.err.println("Thank you for playing!");
 			System.err.println("######################");
 	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
+}

@@ -1,0 +1,569 @@
+package ProjectDND;
+
+import java.util.*;
+/*
+import javax.swing.JFrame;
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Component;
+import java.awt.Dimension;
+*/
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.io.*;
+
+
+@SuppressWarnings("unused")
+
+public class socialExperiment{
+	
+	static Scanner keyboard = new Scanner(System.in);
+	static String[] inventory = new String[9];
+	static Player1 Hero = new Player1();
+	private static String hGen;
+	
+	@SuppressWarnings("resource")
+	private static void dungeon()
+	{
+		 //System objects
+	      Scanner in = new Scanner(System.in);
+	      Random rand = new Random();
+	      int bosscount = 0;
+	      
+	      //Enemy variables
+	      String enemies[] = {"Skeleton", "Zombie", "Assassin", "Warrior", "Lizard", "Dragon"};
+	      int maxEnemyHealth = 75;
+	      int enemyAttackDamage = 25;
+	      
+	      //Player variables
+	      int health = 100;
+	      int attackDamage = 50;
+	      int numHealthPotions = 3;
+	      int healthPotionHealAmount = 30;
+	      int healthPotionDropChance = 50; //Percent chance of adding potion to inventory
+	      
+	      boolean running = true;
+	      
+	      //INTRO
+	      System.out.println("------------------------------WELCOME TO THE DUNGEON!-----------------------------");
+	      System.out.println(" _ .-') _                  .-') _             ('-.                    .-') _,---. ");
+	      System.out.println("( (  OO) )                ( OO ) )          _(  OO)                  ( OO ) )   | ");
+	      System.out.println(" \\     .'_ ,--. ,--.  ,--./ ,--,' ,----.   (,------. .-'),-----. ,--./ ,--,'|   | ");
+	      System.out.println(" ,`'--..._)|  | |  |  |   \\ |  |\\'  .-./-') |  .---'( OO'  .-.  '|   \\ |  |\\|   | ");
+	      System.out.println(" |  |  \\  '|  | | .-')|    \\|  | )  |_( O- )|  |    /   |  | |  ||    \\|  | )   | ");
+	      System.out.println(" |  |   ' ||  |_|( OO )  .     |/|  | .--, (|  '--. \\_) |  |\\|  ||  .     |/|  .' ");
+	      System.out.println(" |  |   / :|  | | `-' /  |\\    |(|  | '. (_/|  .--'   \\ |  | |  ||  |\\    | `--'  ");
+	      System.out.println(" |  '--'  ('  '-'(_.-'|  | \\   | |  '--'  | |  `---.   `'  '-'  '|  | \\   | .--.  ");
+	      System.out.println(" `-------'  `-----'   `--'  `--'  `------'  `------'     `-----' `--'  `--' '--'  ");
+	           
+	      GAME:
+	      while (running) {
+	       System.out.println("----------------------------------------------------------------------------------");
+	       
+	       int enemyHealth = rand.nextInt(maxEnemyHealth);
+	       int l = enemies.length;
+	       String enemy = enemies[rand.nextInt(l)];
+	       System.out.println("\t# " + enemy + " has appeared! #\n");
+	       
+	       while (enemyHealth > 0) {
+	        System.out.println();
+	        System.out.println("\tYour HP: " + health);
+	        System.out.println("\t" + enemy + "'s HP: " + enemyHealth);
+	        System.out.println("\n\tWhat would you like to do?");
+	        System.out.println("\t1. Attack Enemy! --{>>>>>"
+	        		+ "\n\t2. Drink Potion! {&}"
+	        		+ "\n\t3. Run Away! <---"); 
+
+	        int input = in.nextInt();
+	        if (input == 1) {
+	         int damageDealt = rand.nextInt(attackDamage);
+	         int damageTaken = rand.nextInt(enemyAttackDamage);
+	         
+	        //Tallies remaining HP for enemy and player 
+	         enemyHealth -= damageDealt;
+	         health -= damageTaken;
+	         
+	         System.out.println("\t>You strike the " + enemy + " for " + damageDealt + " damage.");
+	         System.out.println("\t>You recieve " + damageTaken + " from the " + enemy + ".");
+	         in.nextLine();
+	        
+	         if (health < 1) {
+	          System.out.println( "\t>You have taken a significant amount of damage!");
+	          break;
+	          
+	         }
+	        }
+	        else if (input == 2) {
+	         if (numHealthPotions > 0) {
+	          health += healthPotionHealAmount;
+	          numHealthPotions--;
+	          System.out.println("\t> You drink a potion.");
+	          System.out.println();
+	          System.out.println("\t> You now have " + health + " HP." );
+	          System.out.println();
+	          System.out.println("\t> You have " + numHealthPotions + " potion(s) remaining." );
+	          System.out.println();
+	         }
+	         else {
+	          System.out.println("\t> You have run out of potions!" );
+	         }
+	        }
+	        else if (input == 3) {
+	         System.out.println("\t> You run away from the " + enemy + "!" );
+	         continue GAME;
+	        }
+	        else {
+	         System.out.println("\t> Invalid command!" );
+	        }
+	        
+	       }
+	       if (health < 1) {
+	        System.out.println("YOU DIED");
+	        
+	        break;
+	       }
+	       
+	       System.out.println( "----------------------------------------------------------------------------------");
+	       System.out.println( " # The " + enemy + " was defeated! # " );
+	       System.out.println( " # You have " + health + " HP left. #" );
+	       if (rand.nextInt(100) < healthPotionDropChance) {
+	        numHealthPotions++;
+	        System.out.println( " # The " + enemy + " drops a potion! #" );
+	        System.out.println( " # You have " + numHealthPotions + " potion(s) in your pouch. #" );
+	       }
+	       System.out.println( "----------------------------------------------------------------------------------" );
+	       System.out.println( "Would you like to continue further into the dungeon?" );
+	       System.out.println( "1. Yes!" );
+	       System.out.println( "2. No..." );
+	       
+	       int input = in.nextInt();
+	       
+	       while (input != 1 && input != 2) {
+	        System.out.println( "Invalid command!" );
+	        input = in.nextInt();
+	       }
+	       if (input == 1) {
+	        System.out.println( "You continue onward into the unknown!" );
+	        bosscount++;
+	       }
+	       else if (input == 2) {
+	        System.out.println();
+	        System.out.println( "Return when you feel ready..." );
+	        System.out.println();
+	        break;
+	        
+	       }
+	      }
+	      
+	      System.out.println( "#########################");
+	      System.out.println("# THANK YOU FOR PLAYING #");
+	      System.out.println("#########################" );
+	      
+	     }
+	
+	public static void readBuff()
+	{
+		String time;
+		time = keyboard.nextLine();
+				
+	}
+	public static void helpNoti()
+	{
+		System.err.println("\nType in 'help' if you ever feel confused or lost");
+	}
+	public static void save()
+	{
+		System.out.println("...Successful");
+	}
+	
+	public static void exit()
+	{
+		System.out.println("Exit Successful");
+	}
+	
+	public static void seperator()
+	{
+		System.out.println("-----------------------------------------");
+	}
+	
+	public static void timeDisplay()
+	{
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		Date dobj = new Date();
+		System.out.println(df.format(dobj));
+	}
+	
+	public static void inventory()
+	{	
+		Scanner invAction = new Scanner(System.in);
+		
+		System.out.print("[Inventory Menu]");
+		
+		boolean counting = true;
+		
+		INVENTORY:
+		while(counting)
+		for(int index=0; index<=inventory.length; index++)
+		{
+			System.out.print("[Inventory Menu]");
+		if(inventory[index] == null)
+		{
+			inventory[index] = "Empty";
+			System.out.print("\n- " +inventory[index]);
+			index++;
+			continue INVENTORY;
+		}
+		else {
+		System.out.print("\n- " +inventory[index]);
+			index++;
+			continue INVENTORY;
+		}
+		}
+	}
+		
+	//In-Game commands 
+	@SuppressWarnings("resource")
+	public static void commandMenu()
+	{
+		Scanner cmdIn = new Scanner(System.in);
+		String cmd;
+		boolean cmdPrompt = true;
+		
+		COMMANDS:
+			while(cmdPrompt)
+			{
+				System.out.print("\\[cmdmod]");
+				cmd = cmdIn.nextLine();
+				
+				switch(cmd)
+				{
+				case "sudo apt init wakeup":
+					wipe();
+					break;
+					
+				case "save":
+					//saveData();
+					System.out.println("Data Save Successful!"); 
+					continue COMMANDS;
+					
+				case "load":
+					System.out.println("Loading User Data...");
+					//loadData();
+					continue COMMANDS;
+					
+				case "inventory":
+					System.out.println("Opening Utility...");
+					inventory();
+					continue COMMANDS;
+					
+				case "install":
+					System.out.println("Unlock Neural Nodes to install upgrades...");
+					continue COMMANDS;
+					
+				case "help":
+					System.err.println("[Commands List]"
+							+ "\n<save>"
+							+ "\n<load>"
+							+ "\n<inventory>"
+							+ "\n<install>"
+							+ "\nHINT: Type in commands without arrowheads");
+					continue COMMANDS;
+				
+				case "exit":
+					exit();
+					break;
+				} //switch cmd
+				
+				break;
+			} //while cmdPrompt
+	} //commandMenu()
+	
+	@SuppressWarnings("resource")
+	public static void wipe()
+	{
+		Scanner wipeIn = new Scanner(System.in);
+				System.out.println("Voice: Wait, how do you know that...?");
+				System.err.println("\nEnding experiment before Graduation will result in full cerebral crash.");
+					
+					seperator();
+					
+					System.out.println("Voice: Are you sure you want to do this?");
+					System.err.println("Wake up? [Y/N]");
+					String wakeUp = wipeIn.nextLine();
+					switch(wakeUp.toUpperCase())
+					{
+					case "Y":
+						System.err.println("Simulation Error(user_conscious-4011)"
+								+ "\nExectuting full system wipe...\n");
+						seperator();
+						wipeIn.nextLine();
+						System.err.println("WIPE COMPLETE!");
+						break;
+					}
+	}
+	
+	@SuppressWarnings("resource")
+	public static void login()
+	{
+		Scanner userIn = new Scanner(System.in);
+		String username;
+		boolean login = true;
+		String[] userData = new String[10];
+		
+		System.out.println("Voice: \nWelcome!!"
+				+ "\nYou are now in the Social Experiment.");
+		System.err.println("You are not familiar... "
+				+ "\n Is this your first visit?"
+				+ "[Y/N]");
+		String firstvisit = userIn.nextLine();
+		
+		LOGIN:
+			while(login)
+			{			
+				switch(firstvisit.toUpperCase())
+				{
+				case "Y":
+					System.out.println("Please create a new username, any amount of characters as desired.");
+					String newuser = userIn.nextLine();
+					userData[0] = newuser;
+					save();
+					System.err.println("You will now be identified as, " + userData[0] + " in the Social Experiment Network.");
+					firstvisit = "N";
+					continue LOGIN;
+				
+				case "N":
+					System.err.println("Please enter 'login'");
+					username = userIn.nextLine();
+					switch(username)
+					{
+					case "login":
+						if(userData[0] == null)
+							userData[0] = "";
+						System.out.println("Welcome back " + userData[0]);
+						//easier saving of data?
+						break;
+						
+					case "anonymous":
+						break;
+						
+					case "guest":
+						break;
+					
+					case "admin":
+						//breaks game
+						break;
+					
+					case "cmd":
+						commandMenu();
+					} //username switch
+					break;
+				} //firstvisit switch
+				
+				break;
+				}
+		
+			}//login while loop
+	 //login();
+	
+	@SuppressWarnings("resource")
+	public static void userDataInput()
+	{
+		/*
+		 * Before being able to have the full Social Experiment Experience
+		 * you must answer a small questionare 
+		*/
+		
+		Scanner enter = new Scanner(System.in);
+		boolean beginning = true;
+		
+		//Player vars
+		String gender;
+		String name;
+		int age;
+		String major;
+		
+		System.out.println("Loading Questionnaire");
+		
+		QUESTIONS:
+		while(beginning)
+		{
+			System.out.println("Are you male or female?"
+					+ "\nNote: If you wish to not identify, simply press Enter.");
+			gender = enter.nextLine();
+			
+			System.out.println("What is your name?");
+			name = enter.next();
+			
+			System.out.println("How old are you?");
+			age = enter.nextInt();
+			System.out.println("What is your field of study?"
+					+ "\n>Please use the abbrevation for the options below...");
+			seperator();
+			System.out.println("-Computer Science = CPU"
+					+ "\n-Business = BUS"
+					+ "\n-Music = MUS"
+					+ "\n-Journalism = JRL"
+					+ "\n-Medicine = MED"
+					+ "\n-Psychology = PSY");
+			
+			major = enter.next();
+			Player1 enigma = new Player1(gender, name, age, major);
+			Hero = enigma;
+			
+			System.out.println(">Below are your current stats.");
+			Hero.major();
+			seperator();
+			System.out.println("Voice: Quickly now...");
+			Hero.PrintInfo();
+			
+			System.out.println("Is this information correct?"
+					+ "\n[Y/N]?");
+			String confrmInfo = enter.next();
+			switch(confrmInfo.toUpperCase())
+			{
+			case "Y":
+				System.out.println("Thank you for answering the questions with honesty!");
+				hGen = name;
+				
+				break;
+			
+			case "N":
+				System.err.println("Please enter your correct information!");
+				continue QUESTIONS;
+			} //confirmInfo switch
+			break;
+			
+		} //while questions
+		
+	} //userDataInput method
+	
+	@SuppressWarnings("resource")
+	public static void dream()
+	{
+		Scanner dream = new Scanner(System.in);
+		Random dice = new Random();
+		
+		boolean escapeRoom = true;
+		boolean choice = true;
+		String action;
+		int actionCheck = 0;
+		int pickpocket = 0;
+		int chance = dice.nextInt(20);
+		
+		seperator();
+		System.out.println("Voice: \n" + hGen +" it is time to get up!");
+		
+		DARKROOM:
+			while(escapeRoom)
+			{
+				timeDisplay();
+				System.out.println("\nObjective:"
+						+ "\nFigure out where you are!");
+				helpNoti();
+				
+				WHATTODO:
+					while(choice)
+					{
+						action = dream.nextLine();
+						switch(action.toLowerCase())
+						{
+						case "help":
+							System.out.println("In the Social Experiment, the prefix-system is essential to survival. "
+									+ "\nActions are based off what you do: "
+									+ "\ni.e 'look for', 'feel for', 'walk to', etc\n"
+									+ "");
+							continue WHATTODO;
+						
+						case "use item":
+							System.out.println("Voice:\nWhat would you like to use?");
+							inventory();
+							continue WHATTODO;
+							
+						case "look around":
+							System.out.println("# You look around. #");
+						case "cmd":
+							commandMenu();
+							continue WHATTODO;
+							
+						case "question voice":
+							break;
+							
+						case "check pockets":
+							boolean checPoc = true;
+							if(pickpocket==1)
+							{
+								System.err.println("You already checked your pockets!");
+								continue WHATTODO;
+							}
+							else if(pickpocket==0)
+							{
+							System.err.println("You scramble through your pockets...");
+							dream.nextLine();
+							while(checPoc) 
+							{
+								
+							//different inventory[0] based on chance var roll
+							if(chance>=15)
+							{ 
+								System.err.println(":VOICE:"
+										+ "\n>You found your phone, what will you do with it?");
+								inventory [0] = "Charged Phone";
+								System.err.println(inventory[0]); System.out.print(" has been added to your inventory");
+								pickpocket++;
+								continue WHATTODO;
+							} // else if chance high ground
+							else if(chance<=14 && chance>=7)
+							{
+								System.out.println(":VOICE:"
+										+ "\nYou found your phone, the battery is very low...");
+								inventory[0] = "Dying Phone";
+								System.err.println(inventory[0]); System.out.print(" has been added to your inventory");
+								pickpocket++;
+								continue WHATTODO;
+							} //else if chance middle ground
+							else if(chance<=6); 
+							{
+								System.out.println(":VOICE:"
+										+ "\nYou found a box of matches, good luck...");
+								inventory[0] = "Matches";
+								System.err.println(inventory[0]); System.out.print(" have been added to your inventory");
+								pickpocket++;
+								continue WHATTODO;
+							} //esle if chance low ground
+							
+								}	
+							} 
+						}
+							break;
+					}
+				}
+			}
+		
+		public static void main(String[] args)
+		{	
+			System.out.println("Login to Social Experiment Network?"
+					+ "\n[Y/N]");
+			String login = keyboard.nextLine();
+			
+			switch(login.toUpperCase())
+			{
+			case "Y":
+				System.err.println("Loading login...");
+				login();
+				userDataInput();
+				dream();
+				break;
+			
+			case "N":
+				System.out.println("No login...");
+				keyboard.nextLine();
+				dungeon();
+				break;
+			
+			case "cmd":
+				commandMenu();
+				break;
+			} //login switch
+			keyboard.close();
+		}
+}
