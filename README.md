@@ -4,21 +4,13 @@
 
 OVERVIEW
 
-“Welcome, you are now in the Social Experiment. You will come at odds with your decisions, follow your heart, or rather your brain.”
+“Welcome, you are now in the Social Experiment..."
 
 Objective: GRADUATE! 
 
 GOALS
 
-Integrate a command system (“commands”) #DONE#
-
-“inventory” will be the command for calling the inventory menu (possible UI in future) 
-
-“install” install is the way to add skills and boost stats with special counter (not concrete)
-
-“save” overwrites/creates a save file (in-game option)
-
-“load” loads data from save file (progress data along with all user inputs “log”
++Bgm
 
 +Dialogue 
 
@@ -27,7 +19,7 @@ Integrate a command system (“commands”) #DONE#
 +Mobile App (hopefully)
 
 MILESTONES
-1) Divided core layers of game into seperate methods. "SE_v0.02"
+1) Divided core layers of game into seperate methods. "refer to SE_v0.02"
 2) "Login" when first running app allows for the user to play one of two games.
  Dungeon(); or SocialExperiment();
 
